@@ -1,10 +1,15 @@
 <?php
+require './vendor/autoload.php';
 
-use PHP2WSDL\PHPClass2WSDL;
-require_once 'src\CalculoHipoteca.php';
+use ServSOAP\CalculoHipoteca;
+use Laminas\Soap\AutoDiscover;
 
-$uri = 'http://localhost/servidorSoap/servidor.php';
+$autodiscover = new AutoDiscover();
+$autodiscover->setClass(CalculoHipoteca::class)
+             ->setUri('http://localhost/banco_soap_hipoteca/servidorSoap/servidor.php');
 
-$wsdlGenerator = new PHPClass2WSDL(CalculoHipoteca::class, $uri);
-$wsdlGenerator->generateWSDL(true);
-$fichero = $wsdlGenerator->save('calculohipoteca.wsdl');
+// Obtener el XML del WSDL
+$wsdlXml = $autodiscover->toXml();
+
+// Guardarlo en un fichero
+file_put_contents('calculohipoteca.wsdl', $wsdlXml);

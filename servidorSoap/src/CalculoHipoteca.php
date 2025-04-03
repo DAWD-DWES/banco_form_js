@@ -1,21 +1,31 @@
 <?php
 
+namespace ServSOAP;
+
+use ServSOAP\CalculoCuotaRequest;
+use ServSOAP\CalculoCuotaResponse;
+
 class CalculoHipoteca {
 
     /**
-     * @soap
-     * @param float $cantidad
-     * @param int $anyos
-     * @param float $tasaInteresAnual
-     * @return float 
+     * @param ServSOAP\CalculoCuotaRequest $peticion 
+     * @return ServSOAP\CalculoCuotaResponse
      */
-    public function calculoCuota(float $cantidad, int $anyos, float $tasaInteresAnual): float {
-        $tasaInteresMensual = $tasaInteresAnual / 12 / 100; // Convertimos a decimal y dividimos entre 12
+    public function calculoCuota($peticion) {
+        $cantidad = $peticion->cantidad;
+        $anyos = $peticion->anyos;
+        $tasaInteresAnual = $peticion->tasaInteresAnual;
+
+        $tasaInteresMensual = $tasaInteresAnual / 12 / 100;
         $totalPagos = $anyos * 12;
+        if ($tasaInteresMensual == 0.0) {
+            return $cantidad / $totalPagos; // cuota lineal sin interés
+        }
+        $factor = pow(1 + $tasaInteresMensual, $totalPagos);
+        $cuota = $cantidad * ($tasaInteresMensual * $factor) / ($factor - 1);
 
-        // Calculamos la cuota mensual
-        $cuota = $cantidad * ($tasaInteresMensual * pow(1 + $tasaInteresMensual, $totalPagos)) / (pow(1 + $tasaInteresMensual, $totalPagos) - 1);
-
-        return $cuota;
+        $respuesta = new CalculoCuotaResponse();
+        $respuesta->return = $cuota;
+        return $respuesta;
     }
 }

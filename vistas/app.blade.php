@@ -22,10 +22,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" href="index.php">Consulta Clientes y Cuentas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="cliente.php">Gestión de Clientes</a>
+                            <a class="nav-link" href="index.php">Clientes y Cuentas</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="index.php?pettransferencia">Transferencias</a>
@@ -40,20 +37,17 @@
                 </div>
             </div>
         </nav>
+
         <main class="flex-fill">
             <!-- Área de contenido central -->
             <div class="container mt-4">
-                @section('contenido')  
-                @component('componentes.buscador', ['actionUrl' => '/index.php', 'placeholder' => 'Buscar por DNI de Cliente', 'fieldName' => 'dnicliente', 'info' => 'infocliente'])
-                @endcomponent
-                @component('componentes.buscador', ['actionUrl' => '/index.php', 'placeholder' => 'Buscar por Id de Cuenta', 'fieldName' => 'idcuenta', 'info' => 'infocuenta'])
-                @endcomponent
-                @show
+                @yield('contenido')
             </div>
         </main>
         @include('parciales.piepagina')
         <!-- Bootstrap JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        @stack('scripts')
     </body>
 </html>
 
