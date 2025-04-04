@@ -80,5 +80,5 @@
 @endsection
 
 @push('scripts')
-<script src="@asset('assets/validar.js')"></script>
+<script src="@asset('assets/js/validar.js')"></script>
 @endpush
